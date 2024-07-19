@@ -1,33 +1,40 @@
-import { NextRequest, NextResponse } from 'next/server';
-import connectDB from '@/config/DbConfig';
-import Interview from '@/model/Interview';
-import { v4 as uuidv4 } from 'uuid';
+import connectDB from "@/config/DbConfig";
+import Interview from "@/model/Interview";
+import { v4 as uuidv4 } from "uuid";
+import moment from "moment";
 
-//page.jsx in dashboard 
-export const createInterview = async (req, res) => {
-    await connectDB();
 
-    try {
-        const { result, job, user } = req.body;
-        console.log("hello")
-        if (result) {
-            const res = await Interview.create({
-                mockId: uuidv4(),
-                jsonMockResp: result,
-                jobPosition: job.role,
-                jobDescription: job.description,
-                jobExperience: job.experience,
-                createdBy: user?.primaryEmailAddress?.emailAddress,
-                createdAt: moment().format('DD-MM-YYYY'),
-                userId: user.id
-            }).select({ mockId });
-        console.log("hii")
-            console.log(res);
-            return res.status(200).json({ res, message: 'Interview Created Successfully' });
+export const POST = async (req) => {
+  await connectDB();
 
-        }
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: 'Internal Server Error' });
+  try {
+    const { result, job, user } = await req.json();
+    if (result) {
+      const mockId = uuidv4();
+      const res = await Interview.create({
+        mockId,
+        jsonMockResp: result,
+        jobPosition: job.role,
+        jobDescription: job.description,
+        jobExperience: job.experience,
+        createdBy: user?.primaryEmailAddress?.emailAddress,
+        createdAt: moment().format("DD-MM-YYYY"),
+        userId: user.id,
+      });
+
+      if (!res) 
+        return Response.json(
+          { message: "Error Creating Interview" },
+          { status: 400 }
+        );
+      
+      return Response.json(
+        { mockId, message: "Interview Created Successfully" },
+        { status: 200 }
+      );
     }
-}
+  } catch (error) {
+    console.log(error);
+    return Response.json({ message: "Internal Server Error" }, { status: 500 });
+  }
+};

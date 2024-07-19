@@ -5,6 +5,7 @@ import { useUser } from '@clerk/nextjs'
 import InterviewItemCard from './InterviewItemCard';
 import DbConnection from '@/config/DbConfig';
 import Interview from '@/model/Interview';
+import axios from 'axios';
 
 function InterviewList() {
   const { user } = useUser();
@@ -15,8 +16,11 @@ function InterviewList() {
   const getInterviewList = async () => {
     try {
       
-      
-      setInterviewList(result)
+      //user?.primaryEmailAddress?.emailAddress
+      const {data} = await axios.post("/api/list-interview", {
+        emailAddress: user?.primaryEmailAddress?.emailAddress
+      });
+      setInterviewList(data.result)
     } catch (err) {
       console.log(err)
     }

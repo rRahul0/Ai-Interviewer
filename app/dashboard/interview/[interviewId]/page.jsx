@@ -1,13 +1,11 @@
 'use client'
 import React, { useState } from 'react'
 import { Button } from "@/components/ui/button"
-import { db } from "@/utils/db"
 import { Lightbulb, WebcamIcon } from "lucide-react"
 import Link from "next/link"
 import { useEffect } from "react"
 import Webcam from "react-webcam"
-import { eq } from 'drizzle-orm'
-import Interview  from '@/model/Interview'
+import axios from 'axios'
 
 function InterviewPage({ params }) {
     const [interviewData, setInterviewData] = useState(null)
@@ -19,11 +17,12 @@ function InterviewPage({ params }) {
 
     const GetInterviewDetails = async () => {
         setLoading(true)
-        const result = await db.select().from(Interview)
-            .where(eq(Interview.mockId, params.interviewId))
-            .execute()
-        // console.log(result)
-        setInterviewData(result[0])
+
+        const { data } = await axios.post("/api/interview-details", {
+            interviewId: params.interviewId
+        });
+        // console.log(data.result[0])
+        setInterviewData(data.result[0])
         setLoading(false)
     }
 

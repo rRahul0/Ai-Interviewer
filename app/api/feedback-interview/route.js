@@ -1,19 +1,22 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { connectDB } from '@/config/DbConfig';
-import { userAnswer } from '@/model/userAnswer';
+import connectDB from '@/config/DbConfig';
+import userAnswer from '@/model/userAnswer';
 // feedback interview
 
-export const feedbackInterview = async (req, res) => {
+export const GET = async (req) => {
+    await connectDB();
+
     try {
-        await connectDB();
+        const { interviewId } = await req.json();
         const result = await userAnswer.find({
-            mockIdRef: params.interviewId
+            mockIdRef: interviewId
         }).sort({ createdAt: -1 });
 
-        return res.status(200).json({ result, message: 'User answer saved successfully' });
+        if (!result)
+            return Response.json({ message: 'Error getting Interview details' }, { status: 400 });
+        return Response.json({ result, message: 'Interview data fetched Successfully' }, { status: 200 });
 
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Internal Server Error' });
+        return Response.json({ message: 'Internal Server Error' }, { status: 500 });
     }
 }

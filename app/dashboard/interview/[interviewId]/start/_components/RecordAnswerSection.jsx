@@ -5,11 +5,9 @@ import Webcam from 'react-webcam'
 import useSpeechToText from 'react-hook-speech-to-text';
 import { Mic, StopCircle } from 'lucide-react';
 import { toast } from 'sonner';
-import { db } from '@/utils/db';
 import { chatSession } from '@/utils/AIModel';
 import { useUser } from '@clerk/nextjs';
-import moment from 'moment';
-import userAnswer from '@/model/userAnswer';
+
 
 function RecordAnswerSection({ interviewQuestions, activeQuestion, interviewData }) {
     const { user } = useUser();
@@ -60,8 +58,16 @@ function RecordAnswerSection({ interviewQuestions, activeQuestion, interviewData
             console.log(interviewData)
            
             //api record-answer
-            
-            if (dbRes) {
+            const { data } = await axios.post("/api/record-answer", {
+                interviewData,
+                interviewQuestions,
+                activeQuestion,
+                userAns: userAnswer,
+                jsonRes,
+                createdAt: moment().format("MMM Do YY"),
+            });
+            console.log(data)
+            if (data) {
                 toast('User answer saved successfully')
                 setuserAnswer('')
                 setResults([])

@@ -1,9 +1,6 @@
 "use client"
 
-import { userAnswer } from '@/utils/schema'
 import React, { useEffect, useState } from 'react'
-import { db } from '@/utils/db'
-import { eq } from 'drizzle-orm'
 
 import {
     Collapsible,
@@ -12,7 +9,6 @@ import {
 } from "@/components/ui/collapsible"
 import { ChevronsUpDown, Link } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import DbConnection from '@/config/DbConfig'
 
 
 function FeedBack({ params }) {
@@ -23,8 +19,10 @@ function FeedBack({ params }) {
     }, []);
     const getFeedBack = async () => {
         try{
-        
-        console.log(result)
+        const {data} = await axios.get("/api/feedback-interview", {
+            interviewId: params.interviewId
+        });
+        console.log(data)
         setFeedBack(result)
     } catch (err) {
         console.log(err)

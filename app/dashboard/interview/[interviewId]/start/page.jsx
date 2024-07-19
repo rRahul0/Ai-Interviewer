@@ -5,7 +5,7 @@ import QuestionSection from './_components/QuestionSection';
 import RecordAnswerSection from './_components/RecordAnswerSection';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-
+import axios from 'axios';
 
 
 function StartInterview({ params }) {
@@ -14,12 +14,19 @@ function StartInterview({ params }) {
     const [activeQuestion, setActiveQuestion] = useState(0)
     const [loading, setLoading] = useState(false)
     useEffect(() => {
+        console.log("jvbfj")
         GetInterviewDetails()
     }, [])
     const GetInterviewDetails = async () => {
+        console.log("jvbfj")
         try {
             setLoading(true)
-            //set question 
+            
+            console.log(params.interviewId)
+            const { data } = await axios.get("/api/set-questions", {
+                interviewId: params.interviewId
+            });
+            console.log(data)
             setInterviewQuestions(questions)
             setInterviewData(result[0])
             setLoading(false)
@@ -28,7 +35,7 @@ function StartInterview({ params }) {
         }
     }
     return (
-        loading ? <p className="h-full w-full text-2xl font-bold" >Loading ...</p> :
+        // loading ? <p className="h-full w-full text-2xl font-bold" >Loading ...</p> :
             <div >
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-10 '>
                     <QuestionSection
