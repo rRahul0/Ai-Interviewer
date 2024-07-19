@@ -16,21 +16,14 @@ import DbConnection from '@/config/DbConfig'
 
 
 function FeedBack({ params }) {
-    console.log(params.interviewId)
+    // console.log(params.interviewId)
     const [feedBack, setFeedBack] = useState([])
     useEffect(() => {
         getFeedBack()
     }, []);
     const getFeedBack = async () => {
         try{
-        // const result = await db.select()
-        //     .from(userAnswer)
-        //     .where(eq(userAnswer.mockIdRef, params.interviewId))
-            // .orderBy(userAnswer.id)
-            await DbConnection();
-        const result = await userAnswer.find({
-            mockIdRef: params.interviewId
-        }).sort({ createdAt: -1 })
+        
         console.log(result)
         setFeedBack(result)
     } catch (err) {

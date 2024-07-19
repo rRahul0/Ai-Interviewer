@@ -1,14 +1,21 @@
-"use server"
-
 import mongoose from "mongoose";
-const DbConnection = async () => {
-    
-  try {
-    await mongoose.connect(process.env.DATABASE_URL);
-    console.log("Database connected successfully");
-  } catch (error) {
-    console.log("Database connection failed", error.message);
-  }
-};
 
-export default DbConnection;
+async function connectDB() {
+  if (connection.isConnected) {
+    console.log("Database is already connected");
+    return;
+  }
+
+  try {
+    const db = await mongoose.connect(process.env.DATABASE_URL);
+
+    connection.isConnected = db.connections[0].readyState;
+
+    console.log("Database is connected successfully!");
+  } catch (error) {
+    console.log("Error connecting to database: ", error);
+    process.exit(1);
+  }
+}
+
+export default connectDB;

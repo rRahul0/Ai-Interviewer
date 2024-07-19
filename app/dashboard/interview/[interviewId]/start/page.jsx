@@ -5,10 +5,7 @@ import QuestionSection from './_components/QuestionSection';
 import RecordAnswerSection from './_components/RecordAnswerSection';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { db } from '@/utils/db';
-import { Interview } from '@/utils/schema';
-import { eq } from 'drizzle-orm';
-import DbConnection from '@/config/DbConfig';
+
 
 
 function StartInterview({ params }) {
@@ -22,13 +19,7 @@ function StartInterview({ params }) {
     const GetInterviewDetails = async () => {
         try {
             setLoading(true)
-            await DbConnection();
-            // const result = await db.select().from(Interview)
-            //     .where(eq(Interview.mockId, params.interviewId))
-            const result = await InterviewModel.findOne({ mockId: params.interviewId });
-            // console.log(result)
-            const questions = JSON.parse(result[0].jsonMockResp)
-            // console.log(questions)
+            //set question 
             setInterviewQuestions(questions)
             setInterviewData(result[0])
             setLoading(false)

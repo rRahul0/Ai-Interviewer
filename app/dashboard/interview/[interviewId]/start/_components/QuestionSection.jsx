@@ -29,7 +29,7 @@ function QuestionSection({ interviewQuestions, activeQuestion }) {
                 {interviewQuestions && interviewQuestions.map((question, index) => (
                     <div key={index} className=' gap-5'>
                         <h2 className={`p-2 rounded-full text-xs md:text-sm text-center cursor-pointer
-            ${activeQuestion == index ? "bg-blue-600 text-white":"bg-secondary"}
+            ${activeQuestion == index ? "bg-blue-600 text-white" : "bg-secondary"}
             `}>Question #{index + 1}</h2>
 
                     </div>
@@ -39,7 +39,7 @@ function QuestionSection({ interviewQuestions, activeQuestion }) {
             <Volume2 onClick={() => { textToSpeach(interviewQuestions[activeQuestion]?.question) }} />
             <div className='border rounded-lg p-5 bg-blue-100 mt-20'>
                 <h2 className='flex gap-2 items-center text-blue-800'>
-                    <Lightbulb size={100}/><strong>Note: </strong>
+                    <Lightbulb size={100} /><strong>Note: </strong>
                     {process.env.NEXT_PUBLIC_INFORMATION}
                 </h2>
                 <h2 className='text-sm text-primary my-2'></h2>

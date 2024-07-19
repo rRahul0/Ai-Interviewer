@@ -52,34 +52,15 @@ function RecordAnswerSection({ interviewQuestions, activeQuestion, interviewData
             const feedbackPrompt = "Question: " + interviewQuestions[activeQuestion]?.question + "Answer: " + userAnswer + " , Dependes on question and use answer give rating for answer out of 10 and feedback as area of improvement if any " + "In just 3 to 5 lines to improve it in json format with rating field and feedback field"
 
             const result = (await chatSession.sendMessage(feedbackPrompt))
-            // console.log(result.response.text())
             const res = (result.response.text())
                 .replace('```json', '')
                 .replace('```', '');
-            // console.log(res)
+           
             const jsonRes = JSON.parse(res);
             console.log(interviewData)
-            // const dbRes = await db.insert(userAnswer)
-            //     .values({
-            //         mockIdRef: interviewData?.mockId,
-            //         question: interviewQuestions[activeQuestion]?.question,
-            //         correctAns: interviewQuestions[activeQuestion]?.answer,
-            //         answer: userAnswer,
-            //         feedBack: jsonRes,
-            //         rating: jsonRes.rating,
-            //         userEmail: user?.primaryEmailAddress?.emailAddress,
-            //         createdAt: moment().format("MMM Do YY"),
-            //     })
-            await DbConnection();
-            const dbRes = await userAnswer.create({
-                mockIdRef: interviewData?.mockId,
-                question: interviewQuestions[activeQuestion]?.question,
-                correctAns: interviewQuestions[activeQuestion]?.answer,
-                userAns: userAnswer,
-                feedBack: jsonRes,
-                rating: jsonRes.rating,
-                createdAt: moment().format("MMM Do YY"),
-            })
+           
+            //api record-answer
+            
             if (dbRes) {
                 toast('User answer saved successfully')
                 setuserAnswer('')

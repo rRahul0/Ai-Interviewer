@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-const Interview = new mongoose.Schema({
+
+const interviewSchema = new mongoose.Schema({
     jsonMockResp: {
         type: String,
         required: true,
@@ -28,9 +29,11 @@ const Interview = new mongoose.Schema({
         type: String,
         required: true,
     },
-    userId:{
+    userId: {
         type: String,
         required: true,
     }
-    });
-export default mongoose.model.Interview || mongoose.model("Interview", Interview);
+});
+
+const Interview = mongoose.models?.Interview || mongoose.model('Interview', interviewSchema);
+export default Interview;

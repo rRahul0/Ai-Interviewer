@@ -14,13 +14,8 @@ function InterviewList() {
   }, [user, interviewList]);
   const getInterviewList = async () => {
     try {
-      await DbConnection();
-      // const result = await db.select().from(Interview)
-      //   .where(eq(Interview.createdBy, user?.primaryEmailAddress?.emailAddress))
-      //   .orderBy(desc(Interview.id))
-      const result = await Interview.find({
-        createdBy: user?.primaryEmailAddress?.emailAddress
-      }).sort({ createdAt: -1 })
+      
+      
       setInterviewList(result)
     } catch (err) {
       console.log(err)

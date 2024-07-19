@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-const userAnswer = new mongoose.Schema({
+
+const userAnswerSchema = new mongoose.Schema({
     mockIdRef: {
         type: String,
         required: true,
@@ -26,7 +27,9 @@ const userAnswer = new mongoose.Schema({
     createdAt: {
         type: String,
         required: true,
-        notNull:true,
+        notNull: true,
     },
-    });
-export default mongoose.models.userAnswer || mongoose.model("userAnswer", userAnswer);
+});
+
+const userAnswer = mongoose.models?.userAnswer || mongoose.model("userAnswer", userAnswerSchema);
+export default userAnswer;
